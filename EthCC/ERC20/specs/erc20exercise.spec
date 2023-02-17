@@ -31,23 +31,19 @@ rule transferFromSpec(env e, address recipient, uint256 amount) {
 rule transferFromReverts(env e, address user1, address user2, uint256 amount) {
 
     uint256 user1Balance = balanceOf(user1);
-    require user1Balance <= amount;
+    require user1Balance < amount;
 
     transferFrom@withrevert(e, user1, e.msg.sender, amount); 
     assert lastReverted;
 }
 
-// link: https://prover.certora.com/output/49230/3a2cfaf1e2544d67b3f22f0ce8c3ba73?anonymousKey=44abb16652269c43805aa62ff8b3309b4d12bcf1
+// link: https://prover.certora.com/output/49230/5a3386a9a9c44aa4b5af6518edede442?anonymousKey=c22b3d037279b216ded74ec076af56f50306f585
 
 /// if you call transferFrom and do have enough funds, the transaction doesn't revert
-rule transferFromDoesntRevert(env e, address recipient, uint256 amount) {
-    uint256 myBalance = balanceOf(e.msg.sender);
-    uint256 myAllowance = allowance(e.msg.sender,recipient);
-    
-    require myBalance >= amount;
-    require e.msg.value == 0;
+rule transferFromDoesntRevert(env e, address user1, address user2, uint256 amount) {
+    uint256 user1Balance = balanceOf(user1);
+    require user1Balance >= amount;
 
-    transferFrom@withrevert(e, e.msg.sender, recipient, amount); 
-
-    assert !lastReverted;
+    transferFrom@withrevert(e, user1, e.msg.sender, amount); 
+    assert lastReverted;
 }
