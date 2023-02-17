@@ -73,17 +73,7 @@ rule transferDoesntRevert(env e, address recipient, uint256 amount) {
 
 /// if you call transferFrom and the transaction doesn't revert, your balance decreases and recipient's balance increases
 rule transferFromSpec(env e, address recipient, uint256 amount) {
-    require e.msg.sender != recipient;
-    uint256 myBalance = balanceOf(e.msg.sender);
-    uint256 recipientBalance = balanceOf(recipient);
-
-    transferFrom(e, e.msg.sender, recipient, amount);
-
-    uint256 myBalanceAfter = balanceOf(e.msg.sender);
-    uint256 recipientBalanceAfter = balanceOf(recipient);
-    
-    assert myBalanceAfter == myBalance - amount;
-    assert recipientBalanceAfter == recipientBalance + amount;
+    assert false;
 }
 
 /// if you call transferFrom and you don't have the funds, the transaction reverts

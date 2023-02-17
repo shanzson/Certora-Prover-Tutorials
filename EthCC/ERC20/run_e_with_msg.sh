@@ -10,4 +10,4 @@ certoraRun contracts/ERC20.sol:ERC20 \
     --loop_iter 1 \
     $RULE \
     --send_only \
-    --msg "ERC20_exercise: My 1st exercise"
+    --msg "ERC20_exercise: My 3rd exercise"
