@@ -42,8 +42,18 @@ rule transferFromReverts(env e, address user1, address user2, uint256 amount) {
 /// if you call transferFrom and do have enough funds, the transaction doesn't revert
 rule transferFromDoesntRevert(env e, address user1, address user2, uint256 amount) {
     uint256 user1Balance = balanceOf(user1);
+    uint256 user2Balance = balanceOf(user2);
     require user1Balance >= amount;
+    require user2 == e.msg.sender;
+    require allowance(user1, user2) >= amount;
+    require amount != 0;
+    require e.msg.value == 0;
+    require balanceOf(user2) + amount < max_uint;
+    require user1 != 0;
+    require user2 != 0;
 
     transferFrom@withrevert(e, user1, e.msg.sender, amount); 
-    assert lastReverted;
+    assert !lastReverted;
 }
+
+// link: https://prover.certora.com/output/49230/916ea7683f784610a324fd460d611a7f?anonymousKey=a4d9b5e242ad0b10d8f76f681cfd738b0404c9fe
