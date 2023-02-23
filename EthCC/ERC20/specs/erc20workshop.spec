@@ -62,6 +62,15 @@ rule checkAddition(env e, address recipient, uint256 amount) {
     assert amount > 0 <=> balanceAfter > balanceBefore;
 }
 
+// Normally, the Prover will only consider non-reverting paths
+rule checkRevert(env e) {
+    require e.msg.value == 0;
+    foo@withrevert(e, 10);
+    assert lastReverted;
+    // assert false;
+
+}
+
 // if you call transfer and you don't have the funds, the transaction reverts
 rule transferReverts(env e, address recipient, uint256 amount) {
     require balanceOf(e.msg.sender) < amount;
