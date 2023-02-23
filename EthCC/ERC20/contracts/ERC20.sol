@@ -77,6 +77,12 @@ contract ERC20 {
         uint256 value
     );
 
+    function foo(uint256 bar) public pure {
+        if (bar == 10) {
+            revert();
+        }
+    }
+
     /**
      * @dev Returns the name of the token.
      */
